@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>숫자 맞히기 게임</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        margin: 50px;
+      }
+      input {
+        padding: 5px;
+        font-size: 16px;
+      }
+      button {
+        padding: 6px 12px;
+        font-size: 16px;
+        margin-left: 10px;
+      }
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>숫자 맞히기 게임 🎯</h1>
+    <p>1부터 100 사이 숫자를 맞혀보세요! (최대 10번 시도)</p>
+    <input type="number" id="guess" min="1" max="100" />
+    <button onclick="checkGuess()">입력</button>
+    <div id="result"></div>
+
+    <script>
+      const answer = Math.floor(Math.random() * 100) + 1;
+      let attempt = 0;
+      const maxAttempts = 10;
+      const guesses = [];
+
+      function checkGuess() {
+        const input = document.getElementById("guess").value;
+        const userNumber = parseInt(input);
+
+        if (isNaN(userNumber) || userNumber < 1 || userNumber > 100) {
+          document.getElementById("result").textContent =
+            "⚠️ 1~100 사이의 숫자를 입력해주세요.";
+          return;
+        }
+
+        if (guesses.includes(userNumber)) {
+          document.getElementById("result").textContent =
+            "🔁 이미 입력한 숫자입니다!";
+          return;
+        }
+
+        guesses.push(userNumber);
+        attempt++;
+
+        if (userNumber === answer) {
+          document.getElementById(
+            "result"
+          ).textContent = `🎉 정답입니다! 시도 횟수: ${attempt}`;
+        } else if (userNumber < answer) {
+          document.getElementById(
+            "result"
+          ).textContent = `📈 더 큰 숫자입니다! 남은 기회: ${
+            maxAttempts - attempt
+          }`;
+        } else {
+          document.getElementById(
+            "result"
+          ).textContent = `📉 더 작은 숫자입니다! 남은 기회: ${
+            maxAttempts - attempt
+          }`;
+        }
+
+        if (attempt >= maxAttempts && userNumber !== answer) {
+          document.getElementById(
+            "result"
+          ).textContent = `❌ 실패! 정답은 ${answer}였습니다.`;
+        }
+      }
+    </script>
+  </body>
+</html>
